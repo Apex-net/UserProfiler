@@ -2,7 +2,7 @@
 <#@ include file="EF.Utility.CS.ttinclude"#><#@ 
  output extension=".cs"#><#
 
-const string inputFile = @"UserProfilerModel.edmx";
+const string inputFile = @"UserProfiler.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
 var code = new CodeGenerationTools(this);
 var ef = new MetadataTools(this);
@@ -68,6 +68,38 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     {
         foreach (var edmProperty in simpleProperties)
         {
+#>
+
+
+<#if (!ReferenceEquals(edmProperty.Documentation, null))
+    {
+#>
+    /// <summary>
+    /// <#=edmProperty.Documentation.Summary#>: <#=edmProperty.Documentation.LongDescription.Replace("\n", Environment.NewLine + "\t/// ")#>
+    /// </summary>
+<#
+	}
+#>
+<# // begin max length attribute
+if (code.Escape(edmProperty.TypeUsage) == "string")
+{
+  int maxLength = 0;
+  if (edmProperty.TypeUsage.Facets["MaxLength"].Value != null && Int32.TryParse(
+          edmProperty.TypeUsage.Facets["MaxLength"].Value.ToString(),
+          out maxLength))
+  {
+#>
+	[StringLength(<#=code.CreateLiteral(maxLength)#>)]
+<#
+   }
+}
+    // begin required attribute
+  if (edmProperty.TypeUsage.Facets["Nullable"].Value.ToString() =="False")
+  {
+#>
+    [Required]
+<#
+    }
 #>
     <#=codeStringGenerator.Property(edmProperty)#>
 <#
@@ -421,7 +453,7 @@ public class CodeStringGenerator
                 "{0}using System;{1}" +
                 "{2}",
                 inHeader ? Environment.NewLine : "",
-                includeCollections ? (Environment.NewLine + "using System.Collections.Generic;") : "",
+                includeCollections ? (Environment.NewLine + "using System.Collections.Generic;"+ Environment.NewLine  +"using System.ComponentModel.DataAnnotations;") : "",
                 inHeader ? "" : Environment.NewLine)
             : "";
     }

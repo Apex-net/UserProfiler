@@ -13,10 +13,10 @@ namespace UserProfiler.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Default : DbContext
+    public partial class UserProfilerContext : DbContext
     {
-        public Default()
-            : base("name=Default")
+        public UserProfilerContext()
+            : base("name=UserProfilerContext")
         {
         }
     
@@ -25,9 +25,5 @@ namespace UserProfiler.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Ticket> TicketSet { get; set; }
-        public DbSet<CambioStato> CambioStatoSet { get; set; }
-        public DbSet<Utente> UtenteSet { get; set; }
-        public DbSet<LivelloOperatore> LivelloOperatoreSet { get; set; }
     }
 }
