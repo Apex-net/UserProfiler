@@ -25,5 +25,12 @@ namespace UserProfiler.Model
             throw new UnintentionalCodeFirstException();
         }
     
+    
+    	/// <summary>
+        /// :  elenca tutti gli applicativi (admissions, clickr, etc.) il cui codice deve corrispondere agli applicativi chiamanti
+        /// </summary>
+        public IDbSet<Applicativo> UPR_APPLICATIVI { get; set; }
+    
+        public IDbSet<Utente> V_UTENTI { get; set; }
     }
 }

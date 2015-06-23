@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applicativo.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserProfiler.Context.cs">
       <AutoGen>True</AutoGen>
@@ -62,6 +65,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UserProfiler.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Utente.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

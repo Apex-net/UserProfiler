@@ -4,20 +4,93 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Store" Alias="Self" Provider="Oracle.DataAccess.Client" ProviderManifestToken="11.2" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
-        <EntityContainer Name="StoreContainer"></EntityContainer>
+      <Schema Namespace="UserProfiler.Store" Alias="Self" Provider="Oracle.DataAccess.Client" ProviderManifestToken="11.2" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+        <EntityContainer Name="UserProfilerStoreContainer">
+          <EntitySet Name="UPR_APPLICATIVI" EntityType="UserProfiler.Store.UPR_APPLICATIVI" store:Type="Tables" />
+          <EntitySet Name="V_UTENTI" EntityType="UserProfiler.Store.V_UTENTI" store:Type="Tables" />
+        </EntityContainer>
+        <EntityType Name="UPR_APPLICATIVI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="number" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="Codice" Type="nvarchar2" Nullable="false" MaxLength="10" />
+          <Property Name="Descrizione" Type="nvarchar2" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="V_UTENTI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="number" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="nvarchar2" Nullable="false" MaxLength="50" />
+          <Property Name="Cognome" Type="nvarchar2" Nullable="false" MaxLength="50" />
+          <Property Name="CodiceFiscale" Type="nvarchar2" Nullable="true" MaxLength="16" />
+          <Property Name="Password" Type="nvarchar2" Nullable="true" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar2" Nullable="false" MaxLength="255" />
+        </EntityType>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="UserProfiler" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
-        <EntityContainer Name="UserProfilerContext" annotation:LazyLoadingEnabled="true"></EntityContainer>
+        <EntityContainer Name="UserProfilerContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UPR_APPLICATIVI" EntityType="UserProfiler.Applicativo" />
+          <EntitySet Name="V_UTENTI" EntityType="UserProfiler.Utente" />
+        </EntityContainer>
+        <EntityType Name="Applicativo">
+          <Documentation>
+            <LongDescription>elenca tutti gli applicativi (admissions, clickr, etc.) il cui codice deve corrispondere agli applicativi chiamanti</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codice" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true">
+            <Documentation>
+              <LongDescription>codice dell'appllicativo e deve essere uguale a quello dei vari progetti installati (es. ADM, CLK, SUP, )</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="Descrizione" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Utente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cognome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CodiceFiscale" Type="String" Nullable="true" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="true" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="StoreContainer" CdmEntityContainer="UserProfilerContext"></EntityContainerMapping>
+        <EntityContainerMapping StorageEntityContainer="UserProfilerStoreContainer" CdmEntityContainer="UserProfilerContext">
+          <EntitySetMapping Name="UPR_APPLICATIVI">
+            <EntityTypeMapping TypeName="UserProfiler.Applicativo">
+              <MappingFragment StoreEntitySet="UPR_APPLICATIVI">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Codice" ColumnName="Codice" />
+                <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_UTENTI">
+            <EntityTypeMapping TypeName="UserProfiler.Utente">
+              <MappingFragment StoreEntitySet="V_UTENTI">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Cognome" ColumnName="Cognome" />
+                <ScalarProperty Name="CodiceFiscale" ColumnName="CodiceFiscale" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
