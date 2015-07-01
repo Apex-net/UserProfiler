@@ -32,5 +32,15 @@ namespace UserProfiler.Model
         public IDbSet<Applicativo> UPR_APPLICATIVI { get; set; }
     
         public IDbSet<Utente> V_UTENTI { get; set; }
+    
+        public IDbSet<V_ESSE3_UTENTI> V_ESSE3_UTENTI { get; set; }
+    
+        public IDbSet<V_ESSE3_GRUPPI_UTENTE> V_ESSE3_GRUPPI_UTENTE { get; set; }
+    
+        public IDbSet<Ruolo> UPR_RUOLI { get; set; }
+    
+        public IDbSet<RuoloUtenteForced> UPR_RUOLI_UTE_FORCED { get; set; }
+    
+        public IDbSet<RuoloGruppoUtente> UPR_RUOLI_GRP_UTE { get; set; }
     }
 }

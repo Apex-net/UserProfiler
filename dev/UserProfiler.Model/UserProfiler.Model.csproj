@@ -51,6 +51,15 @@
       <DependentUpon>UserProfiler.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ruolo.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RuoloGruppoUtente.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RuoloUtenteForced.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserProfiler.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -67,6 +76,12 @@
       <DependentUpon>UserProfiler.edmx</DependentUpon>
     </Compile>
     <Compile Include="Utente.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ESSE3_GRUPPI_UTENTE.cs">
+      <DependentUpon>UserProfiler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ESSE3_UTENTI.cs">
       <DependentUpon>UserProfiler.tt</DependentUpon>
     </Compile>
   </ItemGroup>

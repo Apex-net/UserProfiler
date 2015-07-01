@@ -8,6 +8,39 @@
         <EntityContainer Name="UserProfilerStoreContainer">
           <EntitySet Name="UPR_APPLICATIVI" EntityType="UserProfiler.Store.UPR_APPLICATIVI" store:Type="Tables" />
           <EntitySet Name="V_UTENTI" EntityType="UserProfiler.Store.V_UTENTI" store:Type="Tables" />
+          <EntitySet Name="V_ESSE3_UTENTI" EntityType="UserProfiler.Store.V_ESSE3_UTENTI" store:Type="Tables" />
+          <EntitySet Name="V_ESSE3_GRUPPI_UTENTE" EntityType="UserProfiler.Store.V_ESSE3_GRUPPI_UTENTE" store:Type="Tables" />
+          <EntitySet Name="UPR_RUOLI" EntityType="UserProfiler.Store.UPR_RUOLI" store:Type="Tables" />
+          <EntitySet Name="UPR_RUOLI_UTE_FORCED" EntityType="UserProfiler.Store.UPR_RUOLI_UTE_FORCED" store:Type="Tables" />
+          <EntitySet Name="UPR_RUOLI_GRP_UTE" EntityType="UserProfiler.Store.UPR_RUOLI_GRP_UTE" store:Type="Tables" />
+          <AssociationSet Name="UtenteV_ESSE3_UTENTI" Association="UserProfiler.Store.UtenteV_ESSE3_UTENTI">
+            <End Role="Utente" EntitySet="V_UTENTI" />
+            <End Role="V_ESSE3_UTENTI" EntitySet="V_ESSE3_UTENTI" />
+          </AssociationSet>
+          <AssociationSet Name="V_ESSE3_GRP_UTE_V_ESSE3_UTE" Association="UserProfiler.Store.V_ESSE3_GRP_UTE_V_ESSE3_UTE">
+            <End Role="V_ESSE3_UTENTI" EntitySet="V_ESSE3_UTENTI" />
+            <End Role="V_ESSE3_GRUPPI_UTENTE" EntitySet="V_ESSE3_GRUPPI_UTENTE" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicativoRuolo" Association="UserProfiler.Store.ApplicativoRuolo">
+            <End Role="Applicativo" EntitySet="UPR_APPLICATIVI" />
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+          </AssociationSet>
+          <AssociationSet Name="UtenteRuoloUteForced" Association="UserProfiler.Store.UtenteRuoloUteForced">
+            <End Role="Utente" EntitySet="V_UTENTI" />
+            <End Role="RuoloUtenteForced" EntitySet="UPR_RUOLI_UTE_FORCED" />
+          </AssociationSet>
+          <AssociationSet Name="RuoloRuoloUteForced" Association="UserProfiler.Store.RuoloRuoloUteForced">
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+            <End Role="RuoloUtenteForced" EntitySet="UPR_RUOLI_UTE_FORCED" />
+          </AssociationSet>
+          <AssociationSet Name="RuoloRuoloGrpUtente" Association="UserProfiler.Store.RuoloRuoloGrpUtente">
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+            <End Role="RuoloGruppoUtente" EntitySet="UPR_RUOLI_GRP_UTE" />
+          </AssociationSet>
+          <AssociationSet Name="V_ESSE3_GRP_UTE_Ruolo" Association="UserProfiler.Store.V_ESSE3_GRP_UTE_Ruolo">
+            <End Role="V_ESSE3_GRUPPI_UTENTE" EntitySet="V_ESSE3_GRUPPI_UTENTE" />
+            <End Role="RuoloGruppoUtente" EntitySet="UPR_RUOLI_GRP_UTE" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UPR_APPLICATIVI">
           <Key>
@@ -19,15 +52,156 @@
         </EntityType>
         <EntityType Name="V_UTENTI">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="number" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="number" Nullable="false" Precision="10" />
           <Property Name="Nome" Type="nvarchar2" Nullable="false" MaxLength="50" />
           <Property Name="Cognome" Type="nvarchar2" Nullable="false" MaxLength="50" />
           <Property Name="CodiceFiscale" Type="nvarchar2" Nullable="true" MaxLength="16" />
           <Property Name="Password" Type="nvarchar2" Nullable="true" MaxLength="50" />
           <Property Name="Email" Type="nvarchar2" Nullable="false" MaxLength="255" />
         </EntityType>
+        <EntityType Name="V_ESSE3_UTENTI">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="GRP_ID" Type="number" Nullable="false" Precision="5" />
+          <Property Name="COGNOME" Type="varchar2" Nullable="true" MaxLength="80" />
+          <Property Name="NOME" Type="varchar2" Nullable="true" MaxLength="80" />
+          <Property Name="COD_FIS" Type="varchar2" Nullable="true" MaxLength="16" />
+          <Property Name="EMAIL" Type="varchar2" Nullable="true" MaxLength="255" />
+          <Property Name="EMAIL_ATE" Type="varchar2" Nullable="true" MaxLength="255" />
+          <Property Name="PERS_ID" Type="number" Nullable="true" Precision="10" />
+          <Property Name="SOGG_EST_ID" Type="number" Nullable="true" Precision="10" />
+          <Property Name="DOCENTE_ID" Type="number" Nullable="true" Precision="10" />
+        </EntityType>
+        <EntityType Name="V_ESSE3_GRUPPI_UTENTE">
+          <Key>
+            <PropertyRef Name="GRP_ID" />
+          </Key>
+          <Property Name="GRP_ID" Type="number" Nullable="false" Precision="5" />
+          <Property Name="GRP_NAME" Type="varchar2" Nullable="true" MaxLength="20" />
+          <Property Name="AUTH_PWD_MASTER_LOCATION" Type="number" Nullable="false" Precision="5" />
+        </EntityType>
+        <EntityType Name="UPR_RUOLI">
+          <Key>
+            <PropertyRef Name="RuoloId" />
+            <PropertyRef Name="ApplicativoId" />
+          </Key>
+          <Property Name="RuoloId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="ApplicativoId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="Codice" Type="nvarchar2" Nullable="false" MaxLength="10" />
+          <Property Name="Descrizione" Type="nvarchar2" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="UPR_RUOLI_UTE_FORCED">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicativoId" />
+            <PropertyRef Name="RuoloId" />
+          </Key>
+          <Property Name="UserId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="RuoloId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="ApplicativoId" Type="number" Nullable="false" Precision="10" />
+        </EntityType>
+        <EntityType Name="UPR_RUOLI_GRP_UTE">
+          <Key>
+            <PropertyRef Name="RuoloId" />
+            <PropertyRef Name="ApplicativoId" />
+            <PropertyRef Name="GRP_ID" />
+          </Key>
+          <Property Name="RuoloId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="ApplicativoId" Type="number" Nullable="false" Precision="10" />
+          <Property Name="GRP_ID" Type="number" Nullable="false" Precision="5" />
+        </EntityType>
+        <Association Name="UtenteV_ESSE3_UTENTI">
+          <End Role="Utente" Type="UserProfiler.Store.V_UTENTI" Multiplicity="1"></End>
+          <End Role="V_ESSE3_UTENTI" Type="UserProfiler.Store.V_ESSE3_UTENTI" Multiplicity="0..1"></End>
+          <ReferentialConstraint>
+            <Principal Role="Utente">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="V_ESSE3_UTENTI">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="V_ESSE3_GRP_UTE_V_ESSE3_UTE">
+          <End Role="V_ESSE3_UTENTI" Type="UserProfiler.Store.V_ESSE3_UTENTI" Multiplicity="*"></End>
+          <End Role="V_ESSE3_GRUPPI_UTENTE" Type="UserProfiler.Store.V_ESSE3_GRUPPI_UTENTE" Multiplicity="1"></End>
+          <ReferentialConstraint>
+            <Principal Role="V_ESSE3_GRUPPI_UTENTE">
+              <PropertyRef Name="GRP_ID" />
+            </Principal>
+            <Dependent Role="V_ESSE3_UTENTI">
+              <PropertyRef Name="GRP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicativoRuolo">
+          <End Role="Applicativo" Type="UserProfiler.Store.UPR_APPLICATIVI" Multiplicity="1"></End>
+          <End Role="Ruolo" Type="UserProfiler.Store.UPR_RUOLI" Multiplicity="*"></End>
+          <ReferentialConstraint>
+            <Principal Role="Applicativo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ruolo">
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UtenteRuoloUteForced">
+          <End Role="Utente" Type="UserProfiler.Store.V_UTENTI" Multiplicity="1"></End>
+          <End Role="RuoloUtenteForced" Type="UserProfiler.Store.UPR_RUOLI_UTE_FORCED" Multiplicity="*"></End>
+          <ReferentialConstraint>
+            <Principal Role="Utente">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RuoloUtenteForced">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RuoloRuoloUteForced">
+          <End Role="Ruolo" Type="UserProfiler.Store.UPR_RUOLI" Multiplicity="1"></End>
+          <End Role="RuoloUtenteForced" Type="UserProfiler.Store.UPR_RUOLI_UTE_FORCED" Multiplicity="*"></End>
+          <ReferentialConstraint>
+            <Principal Role="Ruolo">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Principal>
+            <Dependent Role="RuoloUtenteForced">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RuoloRuoloGrpUtente">
+          <End Role="Ruolo" Type="UserProfiler.Store.UPR_RUOLI" Multiplicity="1"></End>
+          <End Role="RuoloGruppoUtente" Type="UserProfiler.Store.UPR_RUOLI_GRP_UTE" Multiplicity="*"></End>
+          <ReferentialConstraint>
+            <Principal Role="Ruolo">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Principal>
+            <Dependent Role="RuoloGruppoUtente">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="V_ESSE3_GRP_UTE_Ruolo">
+          <End Role="V_ESSE3_GRUPPI_UTENTE" Type="UserProfiler.Store.V_ESSE3_GRUPPI_UTENTE" Multiplicity="1"></End>
+          <End Role="RuoloGruppoUtente" Type="UserProfiler.Store.UPR_RUOLI_GRP_UTE" Multiplicity="*"></End>
+          <ReferentialConstraint>
+            <Principal Role="V_ESSE3_GRUPPI_UTENTE">
+              <PropertyRef Name="GRP_ID" />
+            </Principal>
+            <Dependent Role="RuoloGruppoUtente">
+              <PropertyRef Name="GRP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
@@ -36,6 +210,39 @@
         <EntityContainer Name="UserProfilerContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UPR_APPLICATIVI" EntityType="UserProfiler.Applicativo" />
           <EntitySet Name="V_UTENTI" EntityType="UserProfiler.Utente" />
+          <EntitySet Name="V_ESSE3_UTENTI" EntityType="UserProfiler.V_ESSE3_UTENTI" />
+          <AssociationSet Name="UtenteV_ESSE3_UTENTI" Association="UserProfiler.UtenteV_ESSE3_UTENTI">
+            <End Role="Utente" EntitySet="V_UTENTI" />
+            <End Role="V_ESSE3_UTENTI" EntitySet="V_ESSE3_UTENTI" />
+          </AssociationSet>
+          <EntitySet Name="V_ESSE3_GRUPPI_UTENTE" EntityType="UserProfiler.V_ESSE3_GRUPPI_UTENTE" />
+          <EntitySet Name="UPR_RUOLI" EntityType="UserProfiler.Ruolo" />
+          <AssociationSet Name="V_ESSE3_GRP_UTE_V_ESSE3_UTE" Association="UserProfiler.V_ESSE3_GRP_UTE_V_ESSE3_UTE">
+            <End Role="V_ESSE3_UTENTI" EntitySet="V_ESSE3_UTENTI" />
+            <End Role="V_ESSE3_GRUPPI_UTENTE" EntitySet="V_ESSE3_GRUPPI_UTENTE" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicativoRuolo" Association="UserProfiler.ApplicativoRuolo">
+            <End Role="Applicativo" EntitySet="UPR_APPLICATIVI" />
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+          </AssociationSet>
+          <EntitySet Name="UPR_RUOLI_UTE_FORCED" EntityType="UserProfiler.RuoloUtenteForced" />
+          <AssociationSet Name="UtenteRuoloUteForced" Association="UserProfiler.UtenteRuoloUteForced">
+            <End Role="Utente" EntitySet="V_UTENTI" />
+            <End Role="RuoloUtenteForced" EntitySet="UPR_RUOLI_UTE_FORCED" />
+          </AssociationSet>
+          <AssociationSet Name="RuoloRuoloUteForced" Association="UserProfiler.RuoloRuoloUteForced">
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+            <End Role="RuoloUtenteForced" EntitySet="UPR_RUOLI_UTE_FORCED" />
+          </AssociationSet>
+          <EntitySet Name="UPR_RUOLI_GRP_UTE" EntityType="UserProfiler.RuoloGruppoUtente" />
+          <AssociationSet Name="RuoloRuoloGrpUtente" Association="UserProfiler.RuoloRuoloGrpUtente">
+            <End Role="Ruolo" EntitySet="UPR_RUOLI" />
+            <End Role="RuoloGruppoUtente" EntitySet="UPR_RUOLI_GRP_UTE" />
+          </AssociationSet>
+          <AssociationSet Name="V_ESSE3_GRP_UTE_Ruolo" Association="UserProfiler.V_ESSE3_GRP_UTE_Ruolo">
+            <End Role="V_ESSE3_GRUPPI_UTENTE" EntitySet="V_ESSE3_GRUPPI_UTENTE" />
+            <End Role="RuoloGruppoUtente" EntitySet="UPR_RUOLI_GRP_UTE" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Applicativo">
           <Documentation>
@@ -51,18 +258,172 @@
             </Documentation>
           </Property>
           <Property Name="Descrizione" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ruolo" Relationship="UserProfiler.ApplicativoRuolo" FromRole="Applicativo" ToRole="Ruolo" />
         </EntityType>
         <EntityType Name="Utente">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Nome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Cognome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CodiceFiscale" Type="String" Nullable="true" MaxLength="16" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" Nullable="true" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="V_ESSE3_UTENTI" Relationship="UserProfiler.UtenteV_ESSE3_UTENTI" FromRole="Utente" ToRole="V_ESSE3_UTENTI" />
+          <NavigationProperty Name="RuoloUtenteForced" Relationship="UserProfiler.UtenteRuoloUteForced" FromRole="Utente" ToRole="RuoloUtenteForced" />
         </EntityType>
+        <EntityType Name="V_ESSE3_UTENTI">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="GRP_ID" Type="Int16" Nullable="false" />
+          <Property Name="COGNOME" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOME" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="COD_FIS" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL_ATE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PERS_ID" Type="Int32" Nullable="true" />
+          <Property Name="SOGG_EST_ID" Type="Int32" />
+          <Property Name="DOCENTE_ID" Type="Int32" />
+          <NavigationProperty Name="Utente" Relationship="UserProfiler.UtenteV_ESSE3_UTENTI" FromRole="V_ESSE3_UTENTI" ToRole="Utente" />
+          <NavigationProperty Name="V_ESSE3_GRUPPI_UTENTE" Relationship="UserProfiler.V_ESSE3_GRP_UTE_V_ESSE3_UTE" FromRole="V_ESSE3_UTENTI" ToRole="V_ESSE3_GRUPPI_UTENTE" />
+        </EntityType>
+        <Association Name="UtenteV_ESSE3_UTENTI">
+          <End Type="UserProfiler.Utente" Role="Utente" Multiplicity="1" />
+          <End Type="UserProfiler.V_ESSE3_UTENTI" Role="V_ESSE3_UTENTI" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Utente">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="V_ESSE3_UTENTI">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="V_ESSE3_GRUPPI_UTENTE">
+          <Key>
+            <PropertyRef Name="GRP_ID" />
+          </Key>
+          <Property Name="GRP_ID" Type="Int16" Nullable="false" />
+          <Property Name="GRP_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AUTH_PWD_MASTER_LOCATION" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="RuoloGruppoUtente" Relationship="UserProfiler.V_ESSE3_GRP_UTE_Ruolo" FromRole="V_ESSE3_GRUPPI_UTENTE" ToRole="RuoloGruppoUtente" />
+        </EntityType>
+        <EntityType Name="Ruolo">
+          <Key>
+            <PropertyRef Name="RuoloId" />
+            <PropertyRef Name="ApplicativoId" />
+          </Key>
+          <Property Name="RuoloId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicativoId" Type="Int32" Nullable="false" />
+          <Property Name="Codice" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Descrizione" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Applicativo" Relationship="UserProfiler.ApplicativoRuolo" FromRole="Ruolo" ToRole="Applicativo" />
+          <NavigationProperty Name="RuoloGruppoUtente" Relationship="UserProfiler.RuoloRuoloGrpUtente" FromRole="Ruolo" ToRole="RuoloGruppoUtente" />
+          <NavigationProperty Name="RuoloUtenteForced" Relationship="UserProfiler.RuoloRuoloUteForced" FromRole="Ruolo" ToRole="RuoloUtenteForced" />
+        </EntityType>
+        <Association Name="V_ESSE3_GRP_UTE_V_ESSE3_UTE">
+          <End Type="UserProfiler.V_ESSE3_UTENTI" Role="V_ESSE3_UTENTI" Multiplicity="*" />
+          <End Type="UserProfiler.V_ESSE3_GRUPPI_UTENTE" Role="V_ESSE3_GRUPPI_UTENTE" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="V_ESSE3_GRUPPI_UTENTE">
+              <PropertyRef Name="GRP_ID" />
+            </Principal>
+            <Dependent Role="V_ESSE3_UTENTI">
+              <PropertyRef Name="GRP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicativoRuolo">
+          <End Type="UserProfiler.Applicativo" Role="Applicativo" Multiplicity="1" />
+          <End Type="UserProfiler.Ruolo" Role="Ruolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicativo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ruolo">
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RuoloUtenteForced">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicativoId" />
+            <PropertyRef Name="RuoloId" />
+          </Key>
+          <NavigationProperty Name="Utente" Relationship="UserProfiler.UtenteRuoloUteForced" FromRole="RuoloUtenteForced" ToRole="Utente" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ruolo" Relationship="UserProfiler.RuoloRuoloUteForced" FromRole="RuoloUtenteForced" ToRole="Ruolo" />
+          <Property Name="RuoloId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicativoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UtenteRuoloUteForced">
+          <End Type="UserProfiler.Utente" Role="Utente" Multiplicity="1" />
+          <End Type="UserProfiler.RuoloUtenteForced" Role="RuoloUtenteForced" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utente">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RuoloUtenteForced">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RuoloRuoloUteForced">
+          <End Type="UserProfiler.Ruolo" Role="Ruolo" Multiplicity="1" />
+          <End Type="UserProfiler.RuoloUtenteForced" Role="RuoloUtenteForced" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ruolo">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Principal>
+            <Dependent Role="RuoloUtenteForced">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RuoloGruppoUtente">
+          <Key>
+            <PropertyRef Name="RuoloId" />
+            <PropertyRef Name="ApplicativoId" />
+            <PropertyRef Name="GRP_ID" />
+          </Key>
+          <NavigationProperty Name="Ruolo" Relationship="UserProfiler.RuoloRuoloGrpUtente" FromRole="RuoloGruppoUtente" ToRole="Ruolo" />
+          <Property Name="RuoloId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicativoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="V_ESSE3_GRUPPI_UTENTE" Relationship="UserProfiler.V_ESSE3_GRP_UTE_Ruolo" FromRole="RuoloGruppoUtente" ToRole="V_ESSE3_GRUPPI_UTENTE" />
+          <Property Name="GRP_ID" Type="Int16" Nullable="false" />
+        </EntityType>
+        <Association Name="RuoloRuoloGrpUtente">
+          <End Type="UserProfiler.Ruolo" Role="Ruolo" Multiplicity="1" />
+          <End Type="UserProfiler.RuoloGruppoUtente" Role="RuoloGruppoUtente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ruolo">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Principal>
+            <Dependent Role="RuoloGruppoUtente">
+              <PropertyRef Name="RuoloId" />
+              <PropertyRef Name="ApplicativoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="V_ESSE3_GRP_UTE_Ruolo">
+          <End Type="UserProfiler.V_ESSE3_GRUPPI_UTENTE" Role="V_ESSE3_GRUPPI_UTENTE" Multiplicity="1" />
+          <End Type="UserProfiler.RuoloGruppoUtente" Role="RuoloGruppoUtente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="V_ESSE3_GRUPPI_UTENTE">
+              <PropertyRef Name="GRP_ID" />
+            </Principal>
+            <Dependent Role="RuoloGruppoUtente">
+              <PropertyRef Name="GRP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -81,12 +442,65 @@
           <EntitySetMapping Name="V_UTENTI">
             <EntityTypeMapping TypeName="UserProfiler.Utente">
               <MappingFragment StoreEntitySet="V_UTENTI">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Cognome" ColumnName="Cognome" />
                 <ScalarProperty Name="CodiceFiscale" ColumnName="CodiceFiscale" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_ESSE3_UTENTI">
+            <EntityTypeMapping TypeName="UserProfiler.V_ESSE3_UTENTI">
+              <MappingFragment StoreEntitySet="V_ESSE3_UTENTI">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GRP_ID" ColumnName="GRP_ID" />
+                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="COD_FIS" ColumnName="COD_FIS" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="EMAIL_ATE" ColumnName="EMAIL_ATE" />
+                <ScalarProperty Name="PERS_ID" ColumnName="PERS_ID" />
+                <ScalarProperty Name="SOGG_EST_ID" ColumnName="SOGG_EST_ID" />
+                <ScalarProperty Name="DOCENTE_ID" ColumnName="DOCENTE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_ESSE3_GRUPPI_UTENTE">
+            <EntityTypeMapping TypeName="UserProfiler.V_ESSE3_GRUPPI_UTENTE">
+              <MappingFragment StoreEntitySet="V_ESSE3_GRUPPI_UTENTE">
+                <ScalarProperty Name="GRP_ID" ColumnName="GRP_ID" />
+                <ScalarProperty Name="GRP_NAME" ColumnName="GRP_NAME" />
+                <ScalarProperty Name="AUTH_PWD_MASTER_LOCATION" ColumnName="AUTH_PWD_MASTER_LOCATION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UPR_RUOLI">
+            <EntityTypeMapping TypeName="UserProfiler.Ruolo">
+              <MappingFragment StoreEntitySet="UPR_RUOLI">
+                <ScalarProperty Name="RuoloId" ColumnName="RuoloId" />
+                <ScalarProperty Name="ApplicativoId" ColumnName="ApplicativoId" />
+                <ScalarProperty Name="Codice" ColumnName="Codice" />
+                <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UPR_RUOLI_UTE_FORCED">
+            <EntityTypeMapping TypeName="UserProfiler.RuoloUtenteForced">
+              <MappingFragment StoreEntitySet="UPR_RUOLI_UTE_FORCED">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicativoId" ColumnName="ApplicativoId" />
+                <ScalarProperty Name="RuoloId" ColumnName="RuoloId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UPR_RUOLI_GRP_UTE">
+            <EntityTypeMapping TypeName="UserProfiler.RuoloGruppoUtente">
+              <MappingFragment StoreEntitySet="UPR_RUOLI_GRP_UTE">
+                <ScalarProperty Name="RuoloId" ColumnName="RuoloId" />
+                <ScalarProperty Name="ApplicativoId" ColumnName="ApplicativoId" />
+                <ScalarProperty Name="GRP_ID" ColumnName="GRP_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

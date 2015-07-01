@@ -4,9 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6d602208ca5428bbba507e2fc2e7a56" Name="Diagram1" >
-        <EntityTypeShape EntityType="UserProfiler.Applicativo" Width="1.5" PointX="0.625" PointY="0.5" />
-        <EntityTypeShape EntityType="UserProfiler.Utente" Width="1.5" PointX="3.625" PointY="0.5" />
+      <Diagram DiagramId="b6d602208ca5428bbba507e2fc2e7a56" Name="Diagram1" ZoomLevel="98" >
+        <EntityTypeShape EntityType="UserProfiler.Applicativo" Width="1.5" PointX="11.625" PointY="0.5" />
+        <EntityTypeShape EntityType="UserProfiler.Utente" Width="1.625" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="UserProfiler.V_ESSE3_UTENTI" Width="2.125" PointX="2.75" PointY="0.5" FillColor="0, 122, 204" />
+        <AssociationConnector Association="UserProfiler.UtenteV_ESSE3_UTENTI" />
+        <EntityTypeShape EntityType="UserProfiler.V_ESSE3_GRUPPI_UTENTE" Width="2.5" PointX="5.5" PointY="0.5" FillColor="0, 122, 204" />
+        <EntityTypeShape EntityType="UserProfiler.Ruolo" Width="2.125" PointX="8.75" PointY="0.5" FillColor="0, 122, 204" />
+        <AssociationConnector Association="UserProfiler.V_ESSE3_GRP_UTE_V_ESSE3_UTE" />
+        <AssociationConnector Association="UserProfiler.ApplicativoRuolo" />
+        <EntityTypeShape EntityType="UserProfiler.RuoloUtenteForced" Width="1.875" PointX="2.25" PointY="4.625" />
+        <AssociationConnector Association="UserProfiler.UtenteRuoloUteForced" />
+        <AssociationConnector Association="UserProfiler.RuoloRuoloUteForced" />
+        <EntityTypeShape EntityType="UserProfiler.RuoloGruppoUtente" Width="2.375" PointX="5.75" PointY="3.25" />
+        <AssociationConnector Association="UserProfiler.RuoloRuoloGrpUtente" />
+        <AssociationConnector Association="UserProfiler.V_ESSE3_GRP_UTE_Ruolo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

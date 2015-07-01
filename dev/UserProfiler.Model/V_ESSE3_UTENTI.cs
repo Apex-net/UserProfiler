@@ -13,42 +13,47 @@ namespace UserProfiler.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class Utente
+    public partial class V_ESSE3_UTENTI
     {
-        public Utente()
-        {
-            this.RuoloUtenteForced = new HashSet<RuoloUtenteForced>();
-        }
-    
     
     
         [Required]
         public int UserId { get; set; }
     
     
-    	[StringLength(50)]
         [Required]
-        public string Nome { get; set; }
+        public short GRP_ID { get; set; }
     
     
-    	[StringLength(50)]
-        [Required]
-        public string Cognome { get; set; }
+    	[StringLength(80)]
+        public string COGNOME { get; set; }
+    
+    
+    	[StringLength(80)]
+        public string NOME { get; set; }
     
     
     	[StringLength(16)]
-        public string CodiceFiscale { get; set; }
-    
-    
-    	[StringLength(50)]
-        public string Password { get; set; }
+        public string COD_FIS { get; set; }
     
     
     	[StringLength(255)]
-        [Required]
-        public string Email { get; set; }
+        public string EMAIL { get; set; }
     
-        public virtual V_ESSE3_UTENTI V_ESSE3_UTENTI { get; set; }
-        public virtual ICollection<RuoloUtenteForced> RuoloUtenteForced { get; set; }
+    
+    	[StringLength(255)]
+        public string EMAIL_ATE { get; set; }
+    
+    
+        public Nullable<int> PERS_ID { get; set; }
+    
+    
+        public Nullable<int> SOGG_EST_ID { get; set; }
+    
+    
+        public Nullable<int> DOCENTE_ID { get; set; }
+    
+        public virtual Utente Utente { get; set; }
+        public virtual V_ESSE3_GRUPPI_UTENTE V_ESSE3_GRUPPI_UTENTE { get; set; }
     }
 }

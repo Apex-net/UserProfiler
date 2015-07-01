@@ -13,31 +13,22 @@ namespace UserProfiler.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class Applicativo
+    public partial class RuoloGruppoUtente
     {
-        public Applicativo()
-        {
-            this.Ruolo = new HashSet<Ruolo>();
-        }
-    
     
     
         [Required]
-        public int Id { get; set; }
+        public int RuoloId { get; set; }
     
     
-        /// <summary>
-        /// : codice dell'appllicativo e deve essere uguale a quello dei vari progetti installati (es. ADM, CLK, SUP, )
-        /// </summary>
-    	[StringLength(10)]
         [Required]
-        public string Codice { get; set; }
+        public int ApplicativoId { get; set; }
     
     
-    	[StringLength(255)]
         [Required]
-        public string Descrizione { get; set; }
+        public short GRP_ID { get; set; }
     
-        public virtual ICollection<Ruolo> Ruolo { get; set; }
+        public virtual Ruolo Ruolo { get; set; }
+        public virtual V_ESSE3_GRUPPI_UTENTE V_ESSE3_GRUPPI_UTENTE { get; set; }
     }
 }

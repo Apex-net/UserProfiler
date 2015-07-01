@@ -13,42 +13,22 @@ namespace UserProfiler.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class Utente
+    public partial class RuoloUtenteForced
     {
-        public Utente()
-        {
-            this.RuoloUtenteForced = new HashSet<RuoloUtenteForced>();
-        }
-    
     
     
         [Required]
         public int UserId { get; set; }
     
     
-    	[StringLength(50)]
         [Required]
-        public string Nome { get; set; }
+        public int RuoloId { get; set; }
     
     
-    	[StringLength(50)]
         [Required]
-        public string Cognome { get; set; }
+        public int ApplicativoId { get; set; }
     
-    
-    	[StringLength(16)]
-        public string CodiceFiscale { get; set; }
-    
-    
-    	[StringLength(50)]
-        public string Password { get; set; }
-    
-    
-    	[StringLength(255)]
-        [Required]
-        public string Email { get; set; }
-    
-        public virtual V_ESSE3_UTENTI V_ESSE3_UTENTI { get; set; }
-        public virtual ICollection<RuoloUtenteForced> RuoloUtenteForced { get; set; }
+        public virtual Utente Utente { get; set; }
+        public virtual Ruolo Ruolo { get; set; }
     }
 }

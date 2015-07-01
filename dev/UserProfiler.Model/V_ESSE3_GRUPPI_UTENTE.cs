@@ -13,31 +13,26 @@ namespace UserProfiler.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class Applicativo
+    public partial class V_ESSE3_GRUPPI_UTENTE
     {
-        public Applicativo()
+        public V_ESSE3_GRUPPI_UTENTE()
         {
-            this.Ruolo = new HashSet<Ruolo>();
+            this.RuoloGruppoUtente = new HashSet<RuoloGruppoUtente>();
         }
     
     
     
         [Required]
-        public int Id { get; set; }
+        public short GRP_ID { get; set; }
     
     
-        /// <summary>
-        /// : codice dell'appllicativo e deve essere uguale a quello dei vari progetti installati (es. ADM, CLK, SUP, )
-        /// </summary>
-    	[StringLength(10)]
+    	[StringLength(20)]
+        public string GRP_NAME { get; set; }
+    
+    
         [Required]
-        public string Codice { get; set; }
+        public short AUTH_PWD_MASTER_LOCATION { get; set; }
     
-    
-    	[StringLength(255)]
-        [Required]
-        public string Descrizione { get; set; }
-    
-        public virtual ICollection<Ruolo> Ruolo { get; set; }
+        public virtual ICollection<RuoloGruppoUtente> RuoloGruppoUtente { get; set; }
     }
 }
